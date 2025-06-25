@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>configuracion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuración - Sal del closet</title>
   <style>
     body {
       margin: 0;
@@ -11,53 +11,135 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       overflow: hidden;
     }
-    #contenedor {
+    #nubesContainer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .nube {
+      position: absolute;
+      display: flex;
+      padding: 10px 15px;
+      border-radius: 30px;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+    }
+    .nube .circulo {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: -10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .botonesConfig {
+      position: relative;
+      z-index: 10;
+      top: 40vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      gap: 40px;
-      height: 100vh;
+      gap: 60px;
     }
-    .botonToggle {
+    .boton {
       background: #ff75a2;
       border: none;
-      border-radius: 20px;
-      padding: 20px;
-      font-size: 32px;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      font-size: 36px;
       color: white;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(255,117,162,0.7);
       display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 10px;
     }
-    .botonToggle:hover {
+    .boton:hover {
       background: #e85b8d;
     }
-    #volver {
-      position: fixed;
+    #btnVolver {
+      position: absolute;
       top: 20px;
       left: 20px;
+      z-index: 10;
       background: #ff75a2;
       color: white;
-      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 10px;
       border: none;
-      border-radius: 12px;
-      padding: 10px 20px;
+      font-weight: bold;
       font-size: 16px;
       cursor: pointer;
     }
-    #volver:hover {
+    #btnVolver:hover {
       background: #e85b8d;
     }
   </style>
 </head>
 <body>
-  <button id="volver" onclick="window.location.href='menu_principal.html'">⬅ Volver</button>
-  <div id="contenedor">
-    <button class="botonToggle">🎵 Música</button>
-    <button class="botonToggle">📳 Vibración</button>
+  <!-- Fondo con nubes -->
+  <div id="nubesContainer"></div>
+
+  <!-- Botones -->
+  <div class="botonesConfig">
+    <button id="btnMusica" class="boton" title="Música">🎵</button>
+    <button id="btnVibracion" class="boton" title="Vibración">📳</button>
   </div>
+
+  <!-- Volver al menú -->
+  <button id="btnVolver" onclick="window.location.href='index.html'">Volver</button>
+
+  <!-- Audio escondido -->
+  <audio id="audioPlayer" loop>
+    <source src="born_this_way.mp3" type="audio/mpeg" />
+    Tu navegador no admite audio.
+  </audio>
+
+  <script>
+    // Crear nubes con banderas
+    const nubesData = [
+      {x: 60, y: 100, colores: ["#d60270","#9a4d90","#0038a8"]},
+      {x: 200, y: 60, colores: ["#ff218c","#ffd800","#21b1ff"]},
+      {x: 400, y: 120, colores: ["#5bcefa","#f5a9b8","#ffffff","#f5a9b8","#5bcefa"]},
+      {x: 600, y: 80, colores: ["#e40303","#ff8c00","#ffed00","#008026","#004dff","#750787"]},
+      {x: 800, y: 140, colores: ["#ff75a2","#ffffff","#8a00d4"]}
+    ];
+
+    const nubesContainer = document.getElementById("nubesContainer");
+
+    nubesData.forEach(nube => {
+      const divNube = document.createElement("div");
+      divNube.classList.add("nube");
+      divNube.style.left = nube.x + "px";
+      divNube.style.top = nube.y + "px";
+
+      nube.colores.forEach(color => {
+        const circulo = document.createElement("span");
+        circulo.classList.add("circulo");
+        circulo.style.backgroundColor = color;
+        divNube.appendChild(circulo);
+      });
+
+      nubesContainer.appendChild(divNube);
+    });
+
+    // Función del botón de música
+    const btnMusica = document.getElementById("btnMusica");
+    const audioPlayer = document.getElementById("audioPlayer");
+
+    let musicaActiva = false;
+
+    btnMusica.addEventListener("click", () => {
+      if (!musicaActiva) {
+        audioPlayer.play();
+        musicaActiva = true;
+        btnMusica.style.backgroundColor = "#a6e3a1"; // verde clarito para indicar ON
+      } else {
+        audioPlayer.pause();
+        musicaActiva = false;
+        btnMusica.style.backgroundColor = "#ff75a2"; // rosita de nuevo
+      }
+    });
+  </script>
 </body>
 </html>
