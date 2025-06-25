@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Configuración</title>
+  <style>
+    body {
+      margin: 0;
+      background: #b3e5fc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+    #contenedor {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 40px;
+      height: 100vh;
+    }
+    .botonToggle {
+      background: #ff75a2;
+      border: none;
+      border-radius: 20px;
+      padding: 20px;
+      font-size: 32px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255,117,162,0.7);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .botonToggle:hover {
+      background: #e85b8d;
+    }
+    #volver {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #ff75a2;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #volver:hover {
+      background: #e85b8d;
+    }
+  </style>
+</head>
+<body>
+  <button id="volver" onclick="window.location.href='menu_principal.html'">⬅ Volver</button>
+  <div id="contenedor">
+    <button class="botonToggle">🎵 Música</button>
+    <button class="botonToggle">📳 Vibración</button>
+  </div>
+</body>
+</html>
