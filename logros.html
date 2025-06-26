@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sal del Closet - Logros 🏆</title>
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #a0d8f7 0%, #f7a0c4 100%);
+    font-family: Arial, sans-serif;
+    color: #222;
+    overflow-y: auto;
+    height: 100vh;
+    position: relative;
+  }
+
+  #nubesContainer {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 0;
+  }
+
+  .nube {
+    position: absolute;
+    width: 140px;
+    height: 90px;
+    border-radius: 70px / 50px;
+    box-shadow: 0 0 15px rgba(255 255 255 / 0.6);
+    overflow: hidden;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
+    animation: flotar 6s ease-in-out infinite;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nube span {
+    display: block;
+    flex-grow: 1;
+    width: 100%;
+  }
+
+  @keyframes flotar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 80px auto 40px;
+    background: rgba(255 255 255 / 0.85);
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2.8rem;
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+
+  .linea {
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #ff3c78, #ffe600, #00d2ff, #ff3c78);
+    margin-bottom: 25px;
+    border-radius: 4px;
+  }
+
+  .logro {
+    margin-bottom: 18px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.3;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .logro .titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logro .titulo .emoji {
+    font-size: 1.5rem;
+  }
+
+  .logro .descripcion {
+    font-weight: 400;
+    font-size: 0.9rem;
+    margin-left: 1.8rem;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+
+<div id="nubesContainer"></div>
+
+<main>
+  <h1>Logros 🏆</h1>
+  <div class="linea"></div>
+
+  <div class="logro">
+    <div class="titulo"><span class="emoji">🥇</span>Salir del Closet</div>
+    <div class="descripcion">Se desbloquea al salir de un closet en el juego.</div>
+  </div>
+
+  <div class="logro">
+    <div class="titulo"><span class="emoji">🥈</span>Vence a Tu familia</div>
+    <div class="descripcion">Supera al enemigo “familia” en un nivel especial.</div>
+  </div>
+
+  <div class="logro">
+    <div class="titulo"><span class="emoji">🥉</span>Superar 10 comentarios homófobos</div>
+    <div class="descripcion">Esquiva 10 enemigos con comentarios homófobos.</div>
+  </div>
+
+  <div class="logro">
+    <div class="titulo">No vuelvo a ser closeterx</div>
+    <div class="descripcion">Pasa 3 niveles sin entrar a un closet.</div>
+  </div>
+
+  <div class="logro">
+    <div class="titulo">Estoy para ti seas lo que seas</div>
+    <div class="descripcion">Mantener amistad incondicional con tu amigx.</div>
+  </div>
+
+  <div class="logro">
+    <div class="titulo">No es solo un juego, es mi vida</div>
+    <div class="descripcion">Completa todos los niveles del juego.</div>
+  </div>
+
+  <div class="logro">
+    <div class="titulo">Viste tus colores con orgullo</div>
+    <div class="descripcion">Personaliza tu personaje con al menos 3 banderas.</div>
+  </div>
+
+  <div class="logro">
+    <div class="titulo">Rompiendo el closet</div>
+    <div class="descripcion">Entra y sal de un closet 5 veces sin quedarte atrapadx.</div>
+  </div>
+
+  <div class="logro">
+    <div class="titulo">Siempre auténticx</div>
+    <div class="descripcion">Juega 10 niveles consecutivos sin usar ayudas.</div>
+  </div>
+</main>
+
+<script>
+  const banderas = [
+    { nombre: "Bisexual", colores: ["#D60270", "#9B4F96", "#0038A8"] },
+    { nombre: "Pansexual", colores: ["#FF218C", "#FFD800", "#21B1FF"] },
+    { nombre: "Trans", colores: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"] },
+    { nombre: "LGBT", colores: ["#E40303", "#FF8C00", "#FFED00", "#008026", "#004DFF", "#750787"] },
+    { nombre: "Gay", colores: ["#D60270", "#F9A8D4", "#FFFFFF", "#61C0BF", "#0038A8"] },
+    { nombre: "Lesbiana", colores: ["#FF75A2", "#FFFFFF", "#8A00D4"] },
+    { nombre: "Asexual", colores: ["#000000", "#A3A3A3", "#FFFFFF", "#800080"] },
+    { nombre: "Demisexual", colores: ["#000000", "#FFFFFF", "#A3A3A3", "#800080"] },
+    { nombre: "Aromantic", colores: ["#3DA544", "#A3D9A5", "#FFFFFF", "#A3D9A5", "#3DA544"] },
+    { nombre: "Aroace", colores: ["#000000", "#FFFFFF", "#C3E9E8"] },
+    { nombre: "Trans chica", colores: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"] },
+    { nombre: "Trans chico", colores: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"] },
+    { nombre: "Genero fluido", colores: ["#FF75A2", "#FFD800", "#663399", "#000000", "#21B1FF"] },
+    { nombre: "No binario", colores: ["#FFF430", "#FFFFFF", "#9C59D1", "#000000"] }
+  ];
+
+  const container = document.getElementById("nubesContainer");
+
+  // Creamos solo 4 nubes al azar y bien distribuidas
+  function crearNube(bandera, posicionX, posicionY, delay) {
+    const nube = document.createElement("div");
+    nube.classList.add("nube");
+    nube.style.setProperty('--num-franjas', bandera.colores.length);
+
+    bandera.colores.forEach(color => {
+      const franja = document.createElement("span");
+      franja.style.backgroundColor = color;
+      nube.appendChild(franja);
+    });
+
+    nube.style.left = posicionX + "px";
+    nube.style.top = posicionY + "px";
+    nube.style.animationDelay = delay + "s";
+
+    container.appendChild(nube);
+  }
+
+  // Posiciones fijas para 4 nubes (ajústalas si quieres)
+  const posiciones = [
+    { x: 100, y: 70, delay: 0 },
+    { x: 350, y: 130, delay: 2 },
+    { x: 600, y: 80, delay: 4 },
+    { x: 850, y: 120, delay: 1 }
+  ];
+
+  for(let i=0; i<4; i++) {
+    const bandera = banderas[i % banderas.length];
+    const pos = posiciones[i];
+    crearNube(bandera, pos.x, pos.y, pos.delay);
+  }
+</script>
+
+</body>
+</html>
