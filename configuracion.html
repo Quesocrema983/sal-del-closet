@@ -1,147 +1,173 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Configuración</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
       margin: 0;
       background: #b3e5fc;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       overflow: hidden;
+      user-select: none;
     }
-    .boton {
+    /* Botón Volver */
+    #btnVolver {
+      position: fixed;
+      top: 15px;
+      left: 15px;
       background: #ff75a2;
       border: none;
-      padding: 16px 30px;
-      border-radius: 20px;
+      border-radius: 12px;
+      padding: 8px 14px;
       color: white;
-      font-weight: bold;
-      font-size: 20px;
+      font-weight: 600;
+      font-size: 16px;
       cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      margin: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      transition: background 0.3s ease;
+      box-shadow: 0 2px 6px rgba(255,117,162,0.7);
+      z-index: 100;
     }
-    .boton:hover {
+    #btnVolver:hover {
       background: #e85b8d;
     }
+    /* Tus nubes animadas */
     #nubesContainer {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
     }
     .nube {
       position: absolute;
-      border-radius: 50%;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-      z-index: 1;
+      width: 140px; height: 90px;
+      border-radius: 70px/50px;
+      overflow: hidden;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
+      animation: flotar 6s ease-in-out infinite;
+      display: flex; flex-direction: column;
     }
-    #notificacion {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #fff3cd;
-      color: #856404;
-      padding: 12px 20px;
-      border: 1px solid #ffeeba;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 16px;
-      z-index: 5;
-      display: none;
+    .nube span {
+      flex-grow: 1; width: 100%;
+    }
+    @keyframes flotar {
+      0%,100% { transform: translateY(0); }
+      50%    { transform: translateY(-15px); }
+    }
+    /* Botones centrales */
+    .botonesConfig {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      margin-top: 40vh;
+    }
+    .botonToggle {
+      background: #ff75a2;
+      border: none;
+      border-radius: 50%;
+      width: 100px; height: 100px;
+      font-size: 36px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255,117,162,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+    .botonToggle:hover {
+      background: #e85b8d;
     }
   </style>
 </head>
 <body>
-  <div id="nubesContainer"></div>
-  <div id="notificacion">‼️La música se activó sonará en repeat hasta que se desactive ‼️</div>
 
-  <button class="boton" id="btnMusica">🎵 Música</button>
-  <button class="boton" onclick="window.location.href='index.html'">🔙 Volver al Menú</button>
-  <audio id="audioPlayer" loop></audio>
+  <!-- Botón Volver -->
+  <button id="btnVolver">← Volver</button>
+
+  document.getElementById('btnVolver')
+  .addEventListener('click', () => window.location.href = 'index.html');
+
+  <!-- Nubes animadas -->
+  <div id="nubesContainer"></div>
+
+  <!-- Botones Música y Vibración -->
+  <div class="botonesConfig">
+    <button id="btnMusica" class="botonToggle" title="Música">🎵</button>
+    <button id="btnVibracion" class="botonToggle" title="Vibración">📳</button>
+  </div>
+
+  <!-- Audio oculto -->
+  <audio id="audioPlayer" preload="auto"></audio>
 
   <script>
-    // 🌈 NUBES
-    const nubesData = [
-      {x: 60, y: 80, colores: ["#d60270","#9a4d90","#0038a8"]},
-      {x: 250, y: 140, colores: ["#ff218c","#ffd800","#21b1ff"]},
-      {x: 500, y: 100, colores: ["#5bcefa","#f5a9b8","#ffffff","#f5a9b8","#5bcefa"]},
-      {x: 700, y: 160, colores: ["#e40303","#ff8c00","#ffed00","#008026","#004dff","#750787"]},
-    ];
-    const nubesContainer = document.getElementById("nubesContainer");
-    nubesData.forEach(nube => {
-      nube.colores.forEach((color, i) => {
-        const circulo = document.createElement("div");
-        circulo.classList.add("nube");
-        circulo.style.left = (nube.x + i * 22) + "px";
-        circulo.style.top = nube.y + "px";
-        circulo.style.width = "40px";
-        circulo.style.height = "40px";
-        circulo.style.backgroundColor = color;
-        nubesContainer.appendChild(circulo);
-      });
-    });
+    // Volver al menú principal
+    document.getElementById('btnVolver')
+      .addEventListener('click', () => window.location.href = 'index.html');
 
-    // 🎵 MÚSICA
+    // Playlist y Vibración (igual que antes)
     const canciones = [
       "born_this_way.mp3",
       "i_kissed_a_girl.mp3",
       "i_wanna_be_your_girlfriend.mp3",
       "estilazo.mp3",
       "puchi.mp3",
-      "atrevete.mp3"
+      "atrevete_te_te.mp3"
     ];
-    let actual = 0;
-    let reproduciendo = false;
+    let indice = 0, sonando = false, vibra = false;
     const audio = document.getElementById("audioPlayer");
-    audio.src = canciones[actual];
+    audio.src = canciones[indice];
     audio.volume = 0.8;
 
+    // Botón Música
     document.getElementById("btnMusica").addEventListener("click", () => {
-      if (!reproduciendo) {
-        audio.play();
-        reproduciendo = true;
-        document.getElementById("notificacion").style.display = "block";
-        setTimeout(() => {
-          document.getElementById("notificacion").style.display = "none";
-        }, 5000);
+      if (!sonando) {
+        audio.play(); sonando = true;
       } else {
-        audio.pause();
-        reproduciendo = false;
+        audio.pause(); sonando = false;
+        audio.currentTime = 0;
       }
+      if (vibra && navigator.vibrate) navigator.vibrate(70);
     });
 
+    // Siguiente canción
     audio.addEventListener("ended", () => {
-      actual = (actual + 1) % canciones.length;
-      audio.src = canciones[actual];
+      indice = (indice + 1) % canciones.length;
+      audio.src = canciones[indice];
       audio.play();
     });
 
-    // 💖 Persistencia de música entre pantallas
-    window.addEventListener("beforeunload", () => {
-      localStorage.setItem("musicaReproduciendo", reproduciendo ? "1" : "0");
-      localStorage.setItem("cancionActual", actual.toString());
+    // Botón Vibración
+    document.getElementById("btnVibracion").addEventListener("click", () => {
+      vibra = !vibra;
+      if (vibra && navigator.vibrate) navigator.vibrate([50,30,50]);
     });
 
-    window.addEventListener("load", () => {
-      const estado = localStorage.getItem("musicaReproduciendo");
-      const cancionGuardada = localStorage.getItem("cancionActual");
-
-      if (estado === "1") {
-        actual = cancionGuardada ? parseInt(cancionGuardada) : 0;
-        audio.src = canciones[actual];
-        audio.play();
-        reproduciendo = true;
-      }
+    // Generar nubes
+    const banderas = [
+      {x:100,y:70,colores:["#D60270","#9B4F96","#0038A8"]},
+      {x:350,y:130,colores:["#FF218C","#FFD800","#21B1FF"]},
+      {x:600,y:80,colores:["#5BCEFA","#F5A9B8","#FFFFFF","#F5A9B8","#5BCEFA"]},
+      {x:850,y:120,colores:["#FF75A2","#FFFFFF","#8A00D4"]}
+    ];
+    const cont = document.getElementById("nubesContainer");
+    banderas.forEach((b,i) => {
+      const n = document.createElement("div");
+      n.classList.add("nube");
+      n.style.left = b.x + "px";
+      n.style.top = b.y + "px";
+      n.style.setProperty('--num-franjas', b.colores.length);
+      b.colores.forEach(c => {
+        const f = document.createElement("span");
+        f.style.backgroundColor = c;
+        n.appendChild(f);
+      });
+      n.style.animationDelay = (i*1.5) + "s";
+      cont.appendChild(n);
     });
   </script>
 </body>
