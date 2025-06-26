@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Configuración - Sal del Closet</title>
+  <title>Configuración</title>
   <style>
     body {
       margin: 0;
@@ -12,31 +12,64 @@
       overflow: hidden;
       user-select: none;
     }
-
-    canvas {
+    /* Botón Volver */
+    #btnVolver {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background: #ff75a2;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 14px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(255,117,162,0.7);
+      z-index: 100;
+    }
+    #btnVolver:hover {
+      background: #e85b8d;
+    }
+    /* Tus nubes animadas */
+    #nubesContainer {
       position: fixed;
       top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
       z-index: 0;
+      overflow: hidden;
     }
-
-    #contenedorBotones {
+    .nube {
+      position: absolute;
+      width: 140px; height: 90px;
+      border-radius: 70px/50px;
+      overflow: hidden;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
+      animation: flotar 6s ease-in-out infinite;
+      display: flex; flex-direction: column;
+    }
+    .nube span {
+      flex-grow: 1; width: 100%;
+    }
+    @keyframes flotar {
+      0%,100% { transform: translateY(0); }
+      50%    { transform: translateY(-15px); }
+    }
+    /* Botones centrales */
+    .botonesConfig {
       position: relative;
       z-index: 10;
       display: flex;
       justify-content: center;
-      align-items: center;
-      gap: 40px;
-      margin-top: 35vh;
+      gap: 60px;
+      margin-top: 40vh;
     }
-
     .botonToggle {
       background: #ff75a2;
       border: none;
       border-radius: 50%;
-      width: 100px;
-      height: 100px;
+      width: 100px; height: 100px;
       font-size: 36px;
       color: white;
       cursor: pointer;
@@ -46,142 +79,93 @@
       align-items: center;
       transition: background 0.3s ease;
     }
-
     .botonToggle:hover {
       background: #e85b8d;
     }
-
-    #btnVolver {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background: #ff75a2;
-      color: white;
-      font-weight: 600;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      padding: 8px 16px;
-      box-shadow: 0 2px 6px rgba(255,117,162,0.7);
-      cursor: pointer;
-      z-index: 20;
-    }
-
-    /* Nubes de banderas */
-    .nube {
-      position: fixed;
-      border-radius: 30px;
-      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
-      z-index: 1;
-    }
-
-    .nube .circulo {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: -10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    <audio id="audioPlayer" style="display:none;"></audio>
   </style>
 </head>
 <body>
 
-<canvas></canvas>
+  <!-- Botón Volver -->
+  <button id="btnVolver">← Volver</button>
 
-<!-- Nubes -->
-<div id="nubesContainer"></div>
+  <!-- Nubes animadas -->
+  <div id="nubesContainer"></div>
 
-<!-- Botones -->
-<div id="contenedorBotones">
-  <button id="btnMusica" class="botonToggle" title="Música">🎵</button>
-  <button id="btnVibracion" class="botonToggle" title="Vibración">📳</button>
-</div>
+  <!-- Botones Música y Vibración -->
+  <div class="botonesConfig">
+    <button id="btnMusica" class="botonToggle" title="Música">🎵</button>
+    <button id="btnVibracion" class="botonToggle" title="Vibración">📳</button>
+  </div>
 
-<button id="btnVolver" onclick="window.location.href='menu_principal.html'">Volver</button>
+  <!-- Audio oculto -->
+  <audio id="audioPlayer" preload="auto"></audio>
 
-<audio id="audioPlayer" preload="auto"></audio>
+  <script>
+    // Volver al menú principal
+    document.getElementById('btnVolver')
+      .addEventListener('click', () => window.location.href = 'index.html');
 
-<script>
-  // 🎵 Playlist
-  const canciones = [
-    "born_this_way.mp3",
-    "i_kissed_a_girl.mp3",
-    "i_wanna_be_your_girlfriend.mp3",
-    "estilazo.mp3",
-    "puchi.mp3",
-    "atrevete.mp3"
-  ];
+    // Playlist y Vibración (igual que antes)
+    const canciones = [
+      "born_this_way.mp3",
+      "i_kissed_a_girl.mp3",
+      "i_wanna_be_your_girlfriend.mp3",
+      "estilazo.mp3",
+      "puchi.mp3",
+      "atrevete_te_te.mp3"
+    ];
+    let indice = 0, sonando = false, vibra = false;
+    const audio = document.getElementById("audioPlayer");
+    audio.src = canciones[indice];
+    audio.volume = 0.8;
 
-  let actual = 0;
-  let reproduciendo = false;
-  let vibracionActiva = false;
-
-  const audio = document.getElementById("audioPlayer");
-  audio.src = canciones[actual];
-  audio.volume = 0.8;
-
-  document.getElementById("btnMusica").addEventListener("click", () => {
-    vibrar();
-
-    if (!reproduciendo) {
-      audio.play();
-      reproduciendo = true;
-    } else {
-      audio.pause();
-      reproduciendo = false;
-    }
-  });
-
-  // 🎶 Siguiente canción al terminar
-  audio.addEventListener("ended", () => {
-    actual = (actual + 1) % canciones.length;
-    audio.src = canciones[actual];
-    audio.play();
-  });
-
-  // 📳 Vibración toggle
-  document.getElementById("btnVibracion").addEventListener("click", () => {
-    vibracionActiva = !vibracionActiva;
-    vibrar();
-  });
-
-  function vibrar() {
-    if (vibracionActiva && navigator.vibrate) {
-      navigator.vibrate(100);
-    }
-  }
-
-  // 🌈 Nubes
-  const nubesData = [
-    {x: 80, y: 80, colores: ["#d60270","#9a4d90","#0038a8"]}, // Bi
-    {x: 200, y: 130, colores: ["#ff218c","#ffd800","#21b1ff"]}, // Pan
-    {x: 320, y: 90, colores: ["#5bcefa","#f5a9b8","#ffffff","#f5a9b8","#5bcefa"]}, // Trans
-    {x: 500, y: 130, colores: ["#e40303","#ff8c00","#ffed00","#008026","#004dff","#750787"]}, // LGBT
-    {x: 650, y: 80, colores: ["#d60270","#f9a8d4","#ffffff","#61c0bf","#0038a8"]}, // Gay
-    {x: 800, y: 120, colores: ["#ff75a2","#ffffff","#8a00d4"]} // Lesbian
-  ];
-
-  const nubesContainer = document.getElementById("nubesContainer");
-
-  nubesData.forEach(nube => {
-    const divNube = document.createElement("div");
-    divNube.classList.add("nube");
-    divNube.style.left = nube.x + "px";
-    divNube.style.top = nube.y + "px";
-    divNube.style.padding = "8px 12px";
-
-    nube.colores.forEach(color => {
-      const circulo = document.createElement("span");
-      circulo.classList.add("circulo");
-      circulo.style.backgroundColor = color;
-      divNube.appendChild(circulo);
+    // Botón Música
+    document.getElementById("btnMusica").addEventListener("click", () => {
+      if (!sonando) {
+        audio.play(); sonando = true;
+      } else {
+        audio.pause(); sonando = false;
+        audio.currentTime = 0;
+      }
+      if (vibra && navigator.vibrate) navigator.vibrate(70);
     });
 
-    nubesContainer.appendChild(divNube);
-  });
-</script>
+    // Siguiente canción
+    audio.addEventListener("ended", () => {
+      indice = (indice + 1) % canciones.length;
+      audio.src = canciones[indice];
+      audio.play();
+    });
 
+    // Botón Vibración
+    document.getElementById("btnVibracion").addEventListener("click", () => {
+      vibra = !vibra;
+      if (vibra && navigator.vibrate) navigator.vibrate([50,30,50]);
+    });
+
+    // Generar nubes
+    const banderas = [
+      {x:100,y:70,colores:["#D60270","#9B4F96","#0038A8"]},
+      {x:350,y:130,colores:["#FF218C","#FFD800","#21B1FF"]},
+      {x:600,y:80,colores:["#5BCEFA","#F5A9B8","#FFFFFF","#F5A9B8","#5BCEFA"]},
+      {x:850,y:120,colores:["#FF75A2","#FFFFFF","#8A00D4"]}
+    ];
+    const cont = document.getElementById("nubesContainer");
+    banderas.forEach((b,i) => {
+      const n = document.createElement("div");
+      n.classList.add("nube");
+      n.style.left = b.x + "px";
+      n.style.top = b.y + "px";
+      n.style.setProperty('--num-franjas', b.colores.length);
+      b.colores.forEach(c => {
+        const f = document.createElement("span");
+        f.style.backgroundColor = c;
+        n.appendChild(f);
+      });
+      n.style.animationDelay = (i*1.5) + "s";
+      cont.appendChild(n);
+    });
+  </script>
 </body>
 </html>
