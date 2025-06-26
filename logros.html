@@ -15,6 +15,26 @@
     position: relative;
   }
 
+  <button id="btnVolver" style="
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  padding: 8px 12px;
+  background: #ff75a2;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(255,117,162,0.7);
+  z-index: 1000;
+">← Volver</button>
+
+<script>
+  document.getElementById('btnVolver').addEventListener('click', () => {
+    window.location.href = 'index.html'; // O la ruta de tu menú principal
+  });
+</script>
   #nubesContainer {
     position: fixed;
     width: 100%;
