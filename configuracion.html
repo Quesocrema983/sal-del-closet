@@ -88,9 +88,23 @@
 
   <!-- Botón Volver -->
   <button id="btnVolver">← Volver</button>
-  document.getElementById('btnVolver')
+document.getElementById('btnVolver')
   .addEventListener('click', () => window.location.href = 'index.html');
 
+  let ventanaMusica = null;
+let musicaActiva = false;
+
+document.getElementById("btnMusica").addEventListener("click", () => {
+  if (!musicaActiva) {
+    ventanaMusica = window.open("musica.html", "musicaVentana", "width=1,height=1");
+    musicaActiva = true;
+  } else {
+    if (ventanaMusica && !ventanaMusica.closed) {
+      ventanaMusica.close();
+    }
+    musicaActiva = false;
+  }
+});
   <!-- Nubes animadas -->
   <div id="nubesContainer"></div>
 
