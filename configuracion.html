@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Configuración</title>
   <style>
     body {
@@ -12,154 +12,156 @@
       overflow: hidden;
     }
 
-    #nubesContainer {
+    .botonCircular {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background-color: #ff75a2;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      border: none;
+      margin: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .botonCircular:hover {
+      background-color: #e85b8d;
+    }
+
+    .contenedorCentral {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+      margin-top: 30vh;
+    }
+
+    .botonVolver {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
+      top: 15px;
+      left: 15px;
+      background: #ff75a2;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
+      z-index: 10;
+    }
+
+    .botonVolver:hover {
+      background: #e85b8d;
     }
 
     .nube {
       position: absolute;
       border-radius: 50%;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-    }
-
-    #botonesCentro {
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      gap: 40px;
-      z-index: 2;
-    }
-
-    .botonRedondo {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background-color: #ff75a2;
-      border: none;
-      color: white;
-      font-size: 26px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(255,117,162,0.6);
-      transition: background 0.3s ease;
-    }
-
-    .botonRedondo:hover {
-      background-color: #e85b8d;
-    }
-
-    #btnVolver {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      padding: 10px 20px;
-      background-color: #ff75a2;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      z-index: 2;
-      box-shadow: 0 3px 8px rgba(255,117,162,0.5);
-    }
-
-    #btnVolver:hover {
-      background-color: #e85b8d;
+      opacity: 0.9;
+      z-index: 1;
+      box-shadow: inset 0 0 10px rgba(255,255,255,0.3);
     }
   </style>
 </head>
 <body>
+  <!-- NUBES FONDO -->
+  <div id="nubesContainer"></div>
 
-<div id="nubesContainer"></div>
+  <!-- BOTÓN VOLVER -->
+  <button class="botonVolver" onclick="window.location.href='index.html'">⬅️ Volver</button>
 
-<div id="botonesCentro">
-  <button id="btnMusica" class="botonRedondo" title="Música">🎵</button>
-  <button id="btnVibracion" class="botonRedondo" title="Vibración">📳</button>
-</div>
+  <!-- BOTONES MÚSICA Y VIBRACIÓN -->
+  <div class="contenedorCentral">
+    <button id="btnMusica" class="botonCircular">🎵</button>
+    <button id="btnVibracion" class="botonCircular">📳</button>
+  </div>
 
-<button id="btnVolver">🔙 Volver</button>
+  <audio id="audioPlayer" loop>
+    <source src="born_this_way.mp3" type="audio/mpeg">
+  </audio>
 
-<audio id="audioPlayer"></audio>
+  <script>
+    const canciones = [
+      "born_this_way.mp3",
+      "i_kissed_a_girl.mp3",
+      "i_wanna_be_your_girlfriend.mp3",
+      "estilazo.mp3",
+      "puchi.mp3",
+      "atrevete.mp3"
+    ];
 
-<script>
-  const nubesData = [
-    {x: 50, y: 80, colores: ["#d60270","#9a4d90","#0038a8"]}, // Bi
-    {x: 250, y: 140, colores: ["#ff218c","#ffd800","#21b1ff"]}, // Pan
-    {x: 500, y: 100, colores: ["#5bcefa","#f5a9b8","#ffffff","#f5a9b8","#5bcefa"]}, // Trans
-    {x: 700, y: 160, colores: ["#e40303","#ff8c00","#ffed00","#008026","#004dff","#750787"]}, // LGBT
-    {x: 900, y: 60, colores: ["#d60270","#f9a8d4","#ffffff","#61c0bf","#0038a8"]}, // Gay
-    {x: 1100, y: 100, colores: ["#ff75a2","#ffffff","#8a00d4"]} // Lesbiana
-  ];
+    let actual = 0;
+    let reproduciendo = false;
+    let vibracionActiva = false;
 
-  const nubesContainer = document.getElementById("nubesContainer");
-
-  nubesData.forEach(nube => {
-    nube.colores.forEach((color, i) => {
-      const circulo = document.createElement("div");
-      circulo.classList.add("nube");
-      circulo.style.left = (nube.x + i * 24) + "px";
-      circulo.style.top = nube.y + "px";
-      circulo.style.width = "40px";
-      circulo.style.height = "40px";
-      circulo.style.backgroundColor = color;
-      nubesContainer.appendChild(circulo);
-    });
-  });
-
-  const canciones = [
-    "born_this_way.mp3",
-    "i_kissed_a_girl.mp3",
-    "i_wanna_be_your_girlfriend.mp3",
-    "estilazo.mp3",
-    "puchi.mp3",
-    "atrevete.mp3"
-  ];
-
-  let actual = 0;
-  let reproduciendo = false;
-  let vibracionActiva = false;
-  const audio = document.getElementById("audioPlayer");
-  audio.src = canciones[actual];
-  audio.volume = 0.8;
-
-  document.getElementById("btnMusica").addEventListener("click", () => {
-    vibrar();
-    if (!reproduciendo) {
-      audio.play();
-      reproduciendo = true;
-      alert("‼️La música se activó sonará en repeat hasta que se desactive ‼️");
-    } else {
-      audio.pause();
-      reproduciendo = false;
-    }
-  });
-
-  audio.addEventListener("ended", () => {
-    actual = (actual + 1) % canciones.length;
+    const audio = document.getElementById("audioPlayer");
     audio.src = canciones[actual];
-    audio.play();
-  });
+    audio.volume = 0.8;
 
-  document.getElementById("btnVibracion").addEventListener("click", () => {
-    vibracionActiva = !vibracionActiva;
-    vibrar();
-  });
-
-  function vibrar() {
-    if (vibracionActiva && navigator.vibrate) {
-      navigator.vibrate(100);
+    function vibrar() {
+      if (vibracionActiva && navigator.vibrate) {
+        navigator.vibrate(100);
+      }
     }
-  }
 
-  document.getElementById("btnVolver").addEventListener("click", () => {
-    window.location.href = "index.html";
-  });
-</script>
+    document.getElementById("btnMusica").addEventListener("click", () => {
+      vibrar();
+      if (!reproduciendo) {
+        audio.play();
+        reproduciendo = true;
+        alert("‼️La música se activó sonará en repeat hasta que se desactive ‼️");
+      } else {
+        audio.pause();
+        reproduciendo = false;
+      }
+    });
+
+    document.getElementById("btnVibracion").addEventListener("click", () => {
+      vibracionActiva = !vibracionActiva;
+      vibrar();
+    });
+
+    audio.addEventListener("ended", () => {
+      actual = (actual + 1) % canciones.length;
+      audio.src = canciones[actual];
+      audio.play();
+    });
+
+    // NUBES ESTILO BANDERA
+    const nubesContainer = document.getElementById("nubesContainer");
+
+    const nubes = [
+      {
+        x: 80, y: 100,
+        colores: ["#ff75a2", "#ffffff", "#8a00d4"] // Lesbiana
+      },
+      {
+        x: 400, y: 180,
+        colores: ["#5bcefa", "#f5a9b8", "#ffffff", "#f5a9b8", "#5bcefa"] // Trans
+      },
+      {
+        x: 700, y: 70,
+        colores: ["#d60270", "#9a4d90", "#0038a8"] // Bi
+      }
+    ];
+
+    nubes.forEach(nube => {
+      nube.colores.forEach((color, i) => {
+        const circulo = document.createElement("div");
+        circulo.classList.add("nube");
+        circulo.style.backgroundColor = color;
+        circulo.style.width = "50px";
+        circulo.style.height = "50px";
+        circulo.style.left = (nube.x + i * 25) + "px";
+        circulo.style.top = nube.y + "px";
+        nubesContainer.appendChild(circulo);
+      });
+    });
+  </script>
 </body>
 </html>
