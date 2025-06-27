@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Logros 🏆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      margin: 0;
+      background: #b3e5fc;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-y: auto;
+    }
+
+    /* FONDO DE NUBES/BANDERAS */
+    #nubesContainer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .nubeBandera {
+      position: absolute;
+      width: 100px; height: 50px;
+      border-radius: 50px;
+      overflow: hidden;
+      animation: drift 40s linear infinite;
+      opacity: 0.6;
+    }
+    .nubeBandera .franja {
+      flex: 1;
+      width: 100%;
+    }
+    .nubeBandera {
+      display: flex;
+      flex-direction: column;
+    }
+    @keyframes drift {
+      0%   { transform: translateX(-150px); }
+      100% { transform: translateX(110vw); }
+    }
+
+    /* BOTÓN VOLVER */
+    .volver {
+      position: fixed;
+      top: 15px; left: 15px;
+      background: #ff75a2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 2;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .volver:hover {
+      background: #e85b8d;
+    }
+
+    /* CONTENEDOR Y TEXTO DE LOGROS */
+    #logrosContainer {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 60px auto 40px;
+      background: rgba(255,255,255,0.9);
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    #logrosContainer h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+      text-align: center;
+      color: #ff4081;
+    }
+    #logrosContainer .linea {
+      height: 3px;
+      background: #ff4081;
+      margin: 0 auto 30px;
+      width: 80%;
+      border-radius: 2px;
+    }
+    .logro {
+      font-size: 20px;
+      margin-bottom: 18px;
+      line-height: 1.4;
+    }
+    .logro span.medalla {
+      font-size: 24px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .detalle {
+      display: block;
+      margin-left: 32px;
+      font-size: 16px;
+      color: #555;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botón Volver -->
+  <button class="volver" onclick="location.href='index.html'">⏪ Volver</button>
+
+  <!-- Fondo de nubes con banderas -->
+  <div id="nubesContainer">
+    <!-- Bandera Gay -->
+    <div class="nubeBandera" style="top: 20%; left: -120px; animation-delay: 0s;">
+      <div class="franja" style="background:#078d70"></div>
+      <div class="franja" style="background:#26ceaa"></div>
+      <div class="franja" style="background:#98e8c1"></div>
+      <div class="franja" style="background:#ffffff"></div>
+      <div class="franja" style="background:#7bade2"></div>
+      <div class="franja" style="background:#5049cc"></div>
+      <div class="franja" style="background:#3d1a78"></div>
+    </div>
+    <!-- Bandera Chica Trans -->
+    <div class="nubeBandera" style="top: 60%; left: -200px; animation-delay: 10s;">
+      <div class="franja" style="background:#5bcefa"></div>
+      <div class="franja" style="background:#f5a9b8"></div>
+      <div class="franja" style="background:#ffffff"></div>
+      <div class="franja" style="background:#f5a9b8"></div>
+      <div class="franja" style="background:#5bcefa"></div>
+    </div>
+    <!-- Bandera Demisexual -->
+    <div class="nubeBandera" style="top: 40%; left: -160px; animation-delay: 5s;">
+      <div class="franja" style="background:#2f2f2f"></div>
+      <div class="franja" style="background:#ffffff"></div>
+      <div class="franja" style="background:#a3a3a3"></div>
+      <div class="franja" style="background:#7f2f90"></div>
+    </div>
+  </div>
+
+  <!-- Contenedor de logros -->
+  <div id="logrosContainer">
+    <h1>Logros 🏆</h1>
+    <div class="linea"></div>
+
+    <div class="logro">
+      <span class="medalla">🥇</span>Salir del Closet
+      <span class="detalle">Sal de un closet en el juego sin quedarte atrapadx.</span>
+    </div>
+    <div class="logro">
+      <span class="medalla">🥈</span>Vence a Tu familia
+      <span class="detalle">Derrota al enemigo “familia” en el nivel especial.</span>
+    </div>
+    <div class="logro">
+      <span class="medalla">🥉</span>Superar 10 comentarios homófobos
+      <span class="detalle">Esquiva 10 enemigos con frases homofóbicas.</span>
+    </div>
+    <div class="logro">
+      No vuelvo a ser closeterx
+      <span class="detalle">Completa 3 niveles sin entrar a un closet.</span>
+    </div>
+    <div class="logro">
+      Estoy para ti seas lo que seas
+      <span class="detalle">Rescata a un personaje atrapadx en el closet.</span>
+    </div>
+    <div class="logro">
+      Mi bandera, mi poder
+      <span class="detalle">Personaliza tu avatar con una bandera.</span>
+    </div>
+    <div class="logro">
+      Saltos sin normas
+      <span class="detalle">Realiza 50 saltos en cualquier nivel.</span>
+    </div>
+    <div class="logro">
+      No soy experimento
+      <span class="detalle">Derrota al enemigo “hétero-curioso”.</span>
+    </div>
+  </div>
+
+</body>
+</html>
