@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Personalización</title>
+  <style>
+    body {
+      background-color: #b3e5fc;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-y: scroll;
+    }
+
+    .nube {
+      position: absolute;
+      border-radius: 50%;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+      opacity: 0.9;
+      z-index: 0;
+    }
+
+    .titulo {
+      text-align: center;
+      font-size: 32px;
+      margin: 40px 0 20px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .skins-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      padding: 40px 20px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .skin {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pixel-art {
+      display: grid;
+      grid-template-columns: repeat(11, 12px);
+      grid-template-rows: repeat(16, 12px);
+      gap: 1px;
+    }
+
+    .pixel {
+      width: 12px;
+      height: 12px;
+    }
+
+    .border { background: black; }
+    .eye { background: black; }
+    .empty { background: transparent; }
+    .body { background: var(--color); }
+
+    .boton {
+      margin-top: 6px;
+      padding: 4px 12px;
+      border: none;
+      border-radius: 6px;
+      background: #ff75a2;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .boton:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+
+    .bloqueado {
+      font-size: 12px;
+      margin-top: 2px;
+      color: #444;
+    }
+
+    .boton-volver {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background: #ff75a2;
+      padding: 8px 14px;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      z-index: 3;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="boton-volver" onclick="window.location.href='index.html'">⬅ Volver</button>
+
+  <h1 class="titulo">Personaliza tu personaje</h1>
+
+  <div class="skins-container" id="skinsContainer"></div>
+
+  <script>
+    const personajeBase = [
+      ['empty','empty','empty','empty','border','border','border','empty','empty','empty','empty'],
+      ['empty','empty','empty','border','body','body','body','border','empty','empty','empty'],
+      ['empty','empty','border','body','body','body','body','body','border','empty','empty'],
+      ['empty','border','body','eye','body','body','body','eye','body','border','empty'],
+      ['border','body','body','body','body','body','body','body','body','body','border'],
+      ['empty','empty','empty','empty','border','border','border','empty','empty','empty','empty'],
+      ['empty','empty','border','body','body','body','body','body','border','empty','empty'],
+      ['empty','border','body','body','body','body','body','body','body','border','empty'],
+      ['border','body','body','body','body','body','body','body','body','body','border'],
+      ['empty','empty','border','body','body','body','body','body','border','empty','empty'],
+      ['empty','border','body','empty','empty','empty','empty','empty','body','border','empty'],
+      ['border','body','body','empty','empty','empty','empty','empty','body','body','border'],
+      ['border','body','body','empty','empty','empty','empty','empty','body','body','border'],
+      ['empty','border','border','empty','empty','empty','empty','empty','border','border','empty'],
+      ['empty','empty','empty','empty','empty','empty','empty','empty','empty','empty','empty'],
+      ['empty','empty','empty','empty','empty','empty','empty','empty','empty','empty','empty'],
+    ];
+
+    const skins = [
+      { nombre: "Azul", color: "#2196f3", desbloqueada: true },
+      { nombre: "Rojo", color: "#f44336", desbloqueada: true },
+      { nombre: "Verde", color: "#4caf50", desbloqueada: true },
+      { nombre: "Rosa", color: "#e91e63", desbloqueada: true },
+      { nombre: "Bandera LGBT", color: "linear-gradient(#e40303, #ff8c00, #ffed00, #008026, #004dff, #750787)", desbloqueada: false, nivel: 1 },
+      { nombre: "Bandera lésbica", color: "linear-gradient(#d52d00, #ff9a56, #ffffff, #d362a4, #a30262)", desbloqueada: false, nivel: 2 },
+      { nombre: "Bandera gay", color: "linear-gradient(#78b2dc, #ffffff, #78b2dc)", desbloqueada: false, nivel: 3 },
+      { nombre: "Bandera trans", color: "linear-gradient(#5bcefa, #f5a9b8, #ffffff, #f5a9b8, #5bcefa)", desbloqueada: false, nivel: 4 },
+      { nombre: "Bandera demisexual", color: "linear-gradient(to right, black 25%, white 25%, white 50%, purple 75%, gray 100%)", desbloqueada: false, nivel: 5 },
+      { nombre: "Bandera aroace", color: "linear-gradient(#ea698b, #ffecd1, #d5bdaf, #7ebdc2)", desbloqueada: false, nivel: 6 }
+    ];
+
+    const contenedor = document.getElementById("skinsContainer");
+    let skinSeleccionada = localStorage.getItem("skinSeleccionada");
+
+    function crearSkin(skin, index) {
+      const divSkin = document.createElement("div");
+      divSkin.classList.add("skin");
+
+      const pixelArt = document.createElement("div");
+      pixelArt.classList.add("pixel-art");
+
+      personajeBase.forEach(fila => {
+        fila.forEach(pixel => {
+          const div = document.createElement("div");
+          div.classList.add("pixel");
+          if (pixel === 'border' || pixel === 'eye') {
+            div.classList.add(pixel);
+          } else if (pixel === 'body') {
+            if (skin.color.startsWith("linear-gradient")) {
+              div.style.background = skin.color;
+            } else {
+              div.style.setProperty('--color', skin.color);
+              div.classList.add("body");
+            }
+          } else {
+            div.classList.add("empty");
+          }
+          pixelArt.appendChild(div);
+        });
+      });
+
+      const boton = document.createElement("button");
+      boton.classList.add("boton");
+      if (skin.desbloqueada) {
+        boton.textContent = "Equipar";
+        boton.disabled = false;
+      } else {
+        boton.textContent = "Equipar 🔒";
+        boton.disabled = true;
+      }
+
+      boton.addEventListener("click", () => {
+        document.querySelectorAll(".boton").forEach(b => b.style.background = "#ff75a2");
+        boton.style.background = "#444";
+        localStorage.setItem("skinSeleccionada", index);
+      });
+
+      divSkin.appendChild(pixelArt);
+      divSkin.appendChild(boton);
+
+      if (!skin.desbloqueada && skin.nivel) {
+        const info = document.createElement("div");
+        info.classList.add("bloqueado");
+        info.textContent = `Se desbloquea en el nivel ${skin.nivel}`;
+        divSkin.appendChild(info);
+      }
+
+      contenedor.appendChild(divSkin);
+    }
+
+    skins.forEach((skin, index) => {
+      crearSkin(skin, index);
+    });
+  </script>
+
+</body>
+</html>
